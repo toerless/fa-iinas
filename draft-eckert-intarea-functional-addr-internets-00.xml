@@ -10,7 +10,7 @@
 <?rfc symrefs="yes"?>
 <?rfc comments="yes"?>
 
-<rfc docName="draft-eckert-intarea-functional-addressing-for-internets-00" category="info">
+<rfc docName="draft-eckert-intarea-functional-addr-internets-00" category="info">
 
   <front>
     <title abbrev="fa-inas">Functional Addressing (FA) for internets with Independent Network Address Spaces (IINAS)</title>
@@ -34,17 +34,17 @@
 <t>Recent work has raised interest in exploring network layer addressing that is
 more flexible than fixed-length addressing as used in IPv4 (32 bit) and IPv6 (128 bit).</t>
 
-<t>Reasons for the interest include both support for multiple and potentially novel
-address semantics of, but also optimizations of addressing for existing
+<t>The reasons for the interest include both support for multiple and potentially novel
+address semantics, but also optimizations of addressing for existing
 semantics such as unicast tailored not for the global Internet 
-but to better support private networks and limited domains.</t>
+but to better support private networks / limited domains.</t>
 
 <t>This memo explores in the view of the author yet little explored reasons for more flexible addresses
 namely the problems and opportunities for Internetworking with Independent Network Address Spaces (IINAS).</t>
 
 <t>To better enable such internetworks, this memo proposes a framework for a Functional Addressing model.
-This model also intends to support several other addressing model goals including programmability
-and multi-semantics.</t>
+This model also intends to support several other addressing goals including programmability
+and multiple semantics.</t>
 
 
 
@@ -62,21 +62,22 @@ and multi-semantics.</t>
 
 <t>Recent work has examined the value of more flexible than fixed-length addressing
 used in IPv4 (32 bit) and IPv6 (128 bit), see for example <xref target="I-D.jia-intarea-scenarios-problems-addressing"/>,
-an <xref target="I-D.jia-flex-ip-address-structure"/>.</t>
+and <xref target="I-D.jia-flex-ip-address-structure"/>.</t>
 
-<t>Reasons for this interest include both support for multiple and potentially novel
+<t>The reasons for this interest include both support for multiple and potentially novel
 address semantics, see for example <xref target="I-D.king-irtf-semantic-routing-survey"/>
 and <xref target="I-D.king-irtf-challenges-in-routing"/>, but also optimizations of addressing for existing
 semantics, such as unicast, that are tailored not for the global Internet 
 but to better support private networks and limited domains (<xref target="RFC8799"/>).</t>
 
-<t>This memo describes one, in the view of the author yet little explored reason for more flexible addresses
+<t>This memo describes one, in the view of the author yet little explored reason, for more flexible addresses
 namely the problems and opportunities for Internetworking with Independent Network Address Spaces (IINAS).</t>
 
 <t>To better enable such internetworks, this memo proposes a framework for a Functional Addressing model.
-This model also intends to support several other addressing model goals including programmability.</t>
+This model also intends to support several other addressing model goals including programmability
+and multiple semantics.</t>
 
-<t>This memo calls the addressing model functional, because addresses can be seen as a structure of
+<t>This memo calls the addressing model functional, because addresses are constructed as a structure of
 func1{parameter(s),func2{parameter(s),..i.funcN{parameter(s)}}}.</t>
 
 </section>
@@ -93,9 +94,9 @@ other designs.</t>
 </section>
 <section anchor="challenges" title="Challenges">
 
-<t>This section discusses example challenges that gave rise to the proposal in
+<t>This section discusses challenges that gave rise to the proposal in
 this document. It explores in more detail the core challenge not well
-explored elsewhere and summarize the others.</t>
+explored elsewhere and already detailled elsewhere.</t>
 
 <section anchor="high-level-observations" title="High level observations">
 
@@ -110,17 +111,17 @@ via extension headers, there is no option to not send, or shorten the
 IPv4/IPv6 base header addresses, when they are not required.
 While the reasons for fixed size addressing in IPv4/IPv6 can be understood
 for the feasible high-speed, low-cost forwarders of the 1900th, when IPv6
-was conceived, these reasons are today as obsolete as ATM cells where by
+was conceived, these reasons are today (in the opinion of the author) as obsolete as ATM cells where by
 the end of the 1990th when both hardware forwarding and
 mathematical models allowed to provide all ATM type QoS with variable sized packets.</t>
   <t>The Internet as the primary, if not only use-case driving the design:
 The address space semantics provided especially by IPv6 is very much focused
 on the one use-case that drove the development of IPv6: The Internet. While it
-was and will continue to be an important and sufficient reason for IPv6, it
+was and will continue to be th core and sufficient reason for maintaining IPv6, it
 is not sufficient in the opinion of the author for the much broader use of IPv6.
 As of today, a likely overwhelming number of hosts using TCP/IP(v6) protocol
 stacks are not “on the Internet” and the majority likely is not even 
-“connected to the Internet”, but instead part of limited domains. This
+“connected to the Internet”, but instead, they are part of limited domains. This
 even includes many routers in large service providers that are used to service
 Internet traffic. Routers in these networks are only in networks that may
 be called an “underlay” limited domain networks using MPLS, SR-MPLS or SRv6 and
@@ -133,13 +134,14 @@ transparently and are not allowed to touch/modifying
 them. This is the core behavior to support primarily the Internet use case. Yet,
 the IPv4 Internet today would not work without NAT, and arguably, the same may
 also happen to the IPv6 Internet, especially when networks attaching to inexpensive
-Internet offerings want to avoid local renumbering in multihoming and/or
-change of providers via NAT. Even more so, interconnecting IPv4 and IPv6
+Internet offerings want to avoid complex src/dst forwarding for IPv6 multihoming,
+and/or avoid renumbering upon change of provider addresses. Even more so, interconnecting IPv4 and IPv6
 networks has resulted in no fewer than 24 IPv4/IPv6 NAT solutions
 (see https://en.wikipedia.org/wiki/IPv6_transition_mechanism), giving rise to
 the question if and how on-path processing of addressing can be proactively
 become part of future addressing designs to support more flexible internetworking - 
-translating the best of past NAT experience into better future designs.</t>
+translating the best of past NAT experience into better future designs. This is
+a core option of what FA-IINAS can do.</t>
 </list></t>
 
 </section>
@@ -149,15 +151,17 @@ translating the best of past NAT experience into better future designs.</t>
 addressing they provide for private networks with or without connectivity to the
 Internet, which are also called limited domain networks <xref target="RFC8799"/>.</t>
 
-<t>One reference example is that of networking inside a particular product/solution and
-then compositing this product with other products, probably even multiple times,
-hierarchical, as show in picture <xref target="FIG-network"/>. Similar issues and solutions
-can be found in networks with multiple layers of NAT such as Home networks
+<t>One reference example is that of networking inside a particular product/solution/installation,
+and then compositing this product with other products, probably even multiple times,
+hierarchical, as show in picture <xref target="FIG-network"/>. These type of designs are traditional
+in industrial networks. Similar issues and solutions
+can be found in networks with multiple layers of NAT such as Home Networks
 that are dorm rooms connected via NAT to a dorm network, connected via
 another NAT to a campus network, connected via yet another NAT to maybe
-finally, te Internet. Similarly in equally complex federated private networks.</t>
+finally, the Internet. Similarly designs can happen with more complex
+topologies in federated private networks.</t>
 
-<t>In pre-IP industrial networks, individual products where hiding their
+<t>In pre-IP industrial networks, individual products were hiding their
 interior elements by some (combination) of elements that controlled
 the interior behavior completely and provided only an abstracted view
 of the machinery to the outside.</t>
@@ -173,16 +177,17 @@ options such as control loops that can more easily be built
 across multiple components/levels of the hierarchy and controllers
 that can be pulled out of machinery and positioned elsewhere in the
 network, enabling virtualization and resource multiplexing. Multiple
-independently running control systems can be implemented in parallel
+independently running control systems can be implemented in parallel,
 including solutions like device vendor preventive maintenance telemetry,
-operator managed firmware update or third-part orchestrated security
+operator managed firmware update or third-party orchestrated security
 audits or intrusion detection/prevention, just to name a few.</t>
 
 <t>With IP connectivity, all this can be built without the need of understanding
 how to get through various layers of fixed-functionality higher-than-network
-layer gateways that an not be extended by third parties, but instead just
-requiring end-to-end IP connectivity - plus of course an appropriate set of
-security measures.</t>
+layer gateways that can not be extended by third parties. Instead, new
+designs are based on end-to-end IP connectivity - plus appropriate set of
+security mesures at gateway routers, of course an appropriate set of
+security/filtering measures, for example MUD, <xref target="RFC8520"/>.</t>
 
 <figure title="Example hierarchical composed internetwork" anchor="FIG-network"><artwork><![CDATA[
 +-------------------------------------------------------------------+
@@ -213,20 +218,21 @@ security measures.</t>
 +-------------------------------------------------------------------+
 ]]></artwork></figure>
 
-<t>In the opinion of the author of this memo, the most easily adopted
+<t>In the opinion of the author, the most easily adopted
 addressing architecture in these type of solutions today is also the
-one most widely used: IPv4 with <xref target="RFC1918"/> addresses. These addresses
+one widely used: IPv4 with <xref target="RFC1918"/> addresses. These addresses
 are actually owned permanently for each deployment case - as long as
 the scope of addressing is well defined.</t>
 
 <t>In result, a common scheme of addressing in machinery such as the one
-shown in XXX is to reuse the same 10.0.0.0/8 or 192.168.0.0/16 addresses
+shown in <xref target="FIG-network"/> is to reuse the same 10.0.0.0/8 or 192.168.0.0/16 addresses
 for every instance of a product/machinery manufactured. In the example,
 actor1 could use 10.0.0.1, sensor1 10.0.0.2 and so on. But equally,
 if Machine 3 was the same or similar, its internal components would
-share the same machinery.</t>
+share the same machinery. And when hundreds of these products are
+produced, hey would all have the same addresses.</t>
 
-<t>To allow composing those type of machineries,
+<t>To allow deployment and composing those type of machineries,
 the router/switch connecting to the outside/next-level in a hierarchy
 will need simple NATing function for example statically mapping
 the 10.0.0.x on the inside to 10.0.1.x on the outside for Machine 1,
@@ -238,53 +244,55 @@ y for every instance.</t>
 <t>In support of solutions like this, many if not most industrial ethernet
 switches deployable as machinery gateways do therefore support this
 type of static NAT mappings. Likewise, common practices in industries
-rely on these addressing with composition via NAT approaches, including
-machineries as large as in transportation individual train cars to name
-one example.</t>
+rely on this addressing with composition via NAT approaches, including
+machineries as large as production lines or in transportation networks train cars and
+all their included machineries/equipment.</t>
 
 <t>The desire to avoid NAT in IPv6 and availability of sufficient addressing
 space lead to replacing the concept of <xref target="RFC1918"/> in IPv4 with the concept
 of Unique Local Addresses (ULA) in IPv6, standardized in <xref target="RFC4193"/>.
 Instead of the few scoped prefixes of <xref target="RFC1918"/>, ULA provide for
-2^40 different prefixes, and the design guidelines are simple: pick a random
-prefix and then you can interconnect your networks later on with
+2^40 different prefixes, and the design guidelines are theoretically
+simple: pick a random prefix and then you can interconnect your networks later on with
 a very low probability of address prefix collision/reuse.</t>
 
 <t>Unfortunately, low probabilities of address collision is not a good
 design principle for most of these type of environments because there
 is really no good operational solution what do if such collision
 occurs, and rare errors are also very hard to build resilient solutions
-for. Also the probabilities begin to become much more likely when looking
-at a much larger set of addresses, such as when wanting to networks with
-thousands of instances of a product (like a train car).</t>
+for. Also the probabilities begin to become much higher when not
+looking at a connection of just two or few of such ULA networks, but
+when there can be thousands of such networks, such as in the transportation
+networks use case.</t>
 
 <t>In result, ULA is not very persuasive for many such deployments, especially
 when the alternative with IPv4 is address prefix mapping as required for
-NAT, which is mostly a free provisioning side effect of setting up the
+NAT, when NAT an an almost free provisioning side effect of setting up the
 required connectivity via permit lists via network/transport
 filters. The need to automate such in-network filtering to secure
 such deployments can also be seen in the advent of MUD, <xref target="RFC8520"/>.</t>
 
-<t>If one considers that most of these networks will have less than
+<t>If one considers that most of these subnet networks will have fewer than
 253 hosts connected to it, then the IPv6 ULA solution does also not
-provide for any more bits than the 16 bits of z.y in the above example
-using IPv4 10.z.y.x with x being the host part. For hosts, the
-lower 64 bits of an IPv6 address can easily only be used for the
-host part, the whole ULA prefix is 48 bits, leaving just 16 bit. Plus
-a significant packet header overhead plus fewer availability of
+provide for any more bits for subnets than the 16 bits of z.y in the above example
+using IPv4 10.z.y.x with x being the host part: The lower 64 bits of
+the IPv6 address is hard to use for anything than the host parts with
+non-router hosts.  The whole ULA prefix is 48 bits, leaving just 16 bit (128 - 64 -48).
+Add to that the non insignificant IPv6 packet header overhead plus fewer availability of
 NAT in IPv6 products because it is assumed to be less required, plus the
-insufficiency of “low likelihood of collisions” when attempting to
-avoid NAT.</t>
+insufficiency of “low likelihood of collisions” when attempting to utilize
+only ULA.</t>
 
 <t>Vendors of equipment that have assigned Provider Independent IPv6 address space 
 could of course allocate addressing from that space for equipment they
 manufacture or integrate, whether it is globally unique or “generic”, e.g.: reused
 across every instance of a product and hence requiring NAT. Unfortunately,
-and unlike ethernet, where one actually does own addresses after buying a
+and unlike ethernet, where one actually does own addresses after buying an
 OUI, assigned IPv6 addressing is not permanent, and even though
 revocation of address allocation is not standard practice, standardized
-solutions for global IPv6 address space (like IPv4 global address space) really needs
-to provide the ability for those addresses to be returnable.</t>
+solutions for global IPv6 address space (like IPv4 global address space) really need
+to allow the ability for those addresses to be returnable instead of being
+handed off in products to customers.</t>
 
 <t>Even though in hindsight, the hierarchical address allocation from the
 available 16 bits in 10.x.y.z for two layers of interconnections
@@ -304,63 +312,67 @@ of the design are possible.</t>
 <t>As has been noted in prior memos, shorter addresses than IPv6 128 bit
 are highly desirable in private networks / limited domains whenever
 it is clear that the total required addressing space is much smaller and
-connectivity to e.g.: The Internet is not required.  Evidence of such requirements
-can be found for example in header compression for specific IoT networks such
-as <xref target="RFC6282"/>.</t>
+connectivity to e.g.: the Internet is not required.  Evidence of such requirements
+can be found for example in header compression for IoT networks such
+as <xref target="RFC6282"/>. Such compression introduces yet another
+layer of complexity - the whole ecosystem of devices and diagnostic options
+has to support it to be equally acceptable as uncompressed packets.</t>
 
 </section>
 <section anchor="additional-semantics" title="Additional semantics">
 
 <t>New semantics can only be introduced into existing IPv4/IPv6 when their
-required address size fits nicely into the 32 or 128 bit address space.
-This section does not aim to be complete, see <xref target="I-D.king-irtf-semantic-routing-survey"/>
+required address size fits nicely into the 32 or 128 bit address space.</t>
+
+<t>This section does not aim to be complete, see <xref target="I-D.king-irtf-semantic-routing-survey"/>
 for a broader survey. Instead it will provide additional levels of details
-for the benefits of fittingly sized addresses for few example cases the
+for the benefits of fittingly sized addresses for few examples, that the
 author is familiar with.</t>
 
-<t>For IP Multicast this was the case in IPv4, and the additional bits of
-IPv6 addresses even allowed to encode additional IP multicast functionality
-through additional fields in IPv6 addresses, simplifying and improving
-IPv6 for IP multicast extremely over prior IPv4 best practices: 
-Scope address field <xref target="RFC4291"/>, SSM addresses <xref target="RFC4607"/>, Unicast
+<t>When ignorin Anycast, IP Multicast is likely the most widely adopted additional
+semantic added to IPv4. With IPv6, IP Multicast became even more flexible
+and easy to deploy, because the additional bits of
+IPv6 addresses allowed to encode additional IP multicast parameters
+through additional fields in IPv6 addresses: Scope address field <xref target="RFC4291"/>, SSM addresses <xref target="RFC4607"/>, Unicast
 prefix multicast addresses <xref target="RFC3306"/> and embedded-RP <xref target="RFC3956"/>.
 Nevertheless, especially embedded-RP could have benefitted from even
 longer addresses because with the 128 bits available the solution had
-to take a hit in the complexity of deployment, specifically in so
-far that it required engineering of the unicast address of an RP to
-be very short.</t>
+to take a hit in the complexity of deployment. It requires to
+engineer that RP address such that its non-0 host port is very short (4 bits).</t>
 
 <t>In contrast, Bit Indexed Explicit Replication (BIER) which started
-in the IETF in 2014 and resulted in the architecture <xref target="RFC8279"/>
-did not have the option to integrate into IP/IPv6 because it required
-addresses sizes of at least per-network configurable size from 64 to 496 bit
-plus additional qualifiers of maybe 16 bits (so-called SD, SI address
+in the IETF in 2014 and resulted in the architecture <xref target="RFC8279"/>,
+did not choose the option to integrate into IP/IPv6 because it desired
+addresses sizes of at least per-network configurable from 64 to 4096 bit
+plus additional qualifiers of at least 16 bits (so-called SD, SI address
 qualifiers). This made it necessary for BIER to (re-!)invent its own
 network layer packet header, <xref target="RFC8296"/> which duplicates pretty much
-all packet header fields of MPLS and IP packets plus additional BIER
-header fields, so it could be used in both MPLS and non-MPLS networks.</t>
+all packet header fields of MPLS plus IP packets plus additional BIER
+header fields, so that it can be used in both MPLS and non-MPLS networks.</t>
 
 <t>Similar arguments about the limited size of IPv6 address could likely
-be made for ICN/CCN network semantics because the semantic of their
+be made for ICN/CCN networks because the semantic of their
  addresses is that of data items such as time slices of specific
 spatial and temporal resolutions of some media such as an audio/video
-recording - and those name spaces would ideally have address as long
+recording - and those name spaces would ideally have addresses as long
 as URLs.</t>
 
 </section>
 <section anchor="programmability" title="Programmability">
 
 <t>Segment Routing via IPv6 (SRv6) introduced with <xref target="RFC8986"/> and <xref target="RFC8754"/>
-(SRH) and architecture in which source routing with IPv6 is combined with
-encoding of additional source-routing hop packet processing options
-encoded in the source-routing hop IPv6 address. This is a very
-flexible and theoretically extensible concept but very much limited
-by the fixed address length design of IPv6. In most cases the bits
-reserved for this additional packet processing (called “programmability”)
+(SRH) and architecture in which source routing with an IPv6 extension
+header  is combined with encoding of additional processing semantics
+into the destination and source routing hops IPv6 addresses. SRv6
+calls this programmability.</t>
+
+<t>SRv6 is a very flexible and theoretically extensible concept but challenged
+by the fixed address length design of IPv6. For most steering hop
+addresses,  the bits reserved for this additional packet processing 
 are not required, but when they are required there may even be too few
 bits available. Variable length addresses allowing for variable long
-programming bits would in the opinion of the author of this memo be
-highly beneficial.</t>
+programming field in the address would in the opinion of the author be highly
+beneficial.</t>
 
 <t>One evidence for the programmability bits seen as wasteful in many
 cases is a variety of currently proposed drafts to provide more
@@ -376,7 +388,7 @@ refers to the design aspect that addresses in this design can be interpreted
 as functions with parameters.</t>
 
 <t>Notwithstanding other granularities or options, this document assumes that
-addresses are textually represented in hexadecimal and that he minimum structure
+addresses are textually represented in hexadecimal and that the minimum structure
 element of an address is 4 bit so that the different structural elements of
 an address can simply be shown as concatenation of hex digits. The “.”
 character is inserted optionally to show where in an address one semantic
@@ -387,20 +399,23 @@ protocol, this memo starts by assuming all nodes are routers and that addresses
 are predominantly node addresses as opposed to IP/IPv6, which defines unicast
 addresses to be interface addresses. This is but an academic differentiation, 
 because node addresses can also be represented as interface addresses of
-so-called “loopback” interfaces. “.” characters are used to emphasize</t>
+so-called “loopback” interfaces.</t>
 
 <t>A network in this design is an independent address space, not shared with
-other networks of theoretically unlimited long addresses that is mapped onto a graph of
-transitively connected nodes. These nodes form the network. Practical limits to
+other networks. A nework has theoretically unlimited long addresses whose
+prefixes are mapped onto the nodes of the network, which are expected to
+form a graph of transitively connected nodes. Practical limits to
 address length are subject to acceptable packetization.</t>
+
+<section anchor="addressing-for-unicast" title="Addressing for unicast">
 
 <t>Each node is assigned one or more node prefixes from the networks address space and
 none of these node prefixes can be overlapping. In other words, no assigned nodeprefix
 can be a prefix of another assigned nodeprefix. This rule ensures that every node
 “owns” any address equal or longer to its assigned nodeprefix. Allocation of
 node prefixes is currently out of scope for this memo but could rely on any
-well-known methods including manual operator assigned or as initially described
-in this document assigned by manufacturer/vendor.</t>
+well-known methods including manual operator assigned, SDN controll managed,
+or as initially described in this document assigned by manufacturer/vendor.</t>
 
 <t>Routing in a network is assumed to enable forwarding across the graph of the
 network to the node owning the nodeprefix of the address.</t>
@@ -418,6 +433,9 @@ longer prefixes.</t>
 a specific function on the node itself. A generic representation of
 an address could be nodeprefix.function.{parameter}.</t>
 
+</section>
+<section anchor="forwarding" title="Forwarding">
+
 <section anchor="dispose-function" title="Dispose Function">
 
 <t>When using a single digit function field, function = 0 could for example be 
@@ -433,7 +451,7 @@ as IPv4/IPv6 might do at some point.</t>
 </section>
 <section anchor="steering-function" title="Steering Function">
 
-<t>More interestingly, command = 1 could be a “steer” command and the parameter
+<t>Command = 1 could be a “steer” command and the parameter
 is another address. To act on the command, the node would strip the nodeprefix
 and command part of the address and forward it based on the address parameter.
 For example node 73 (e.g.: node with nodeprefix 73) receives a packet with destination
@@ -446,7 +464,7 @@ destination address 33.0 to node 33, which ultimately receives it.</t>
 
 <t>To introduce additional semantics into a network, such as for example multicasting,
 we need to generalize how to interpret the first part of the address, which so
-far was only interpreted to be a nodeprefix.</t>
+far was only interpreted to be a nodeprefix for unicast forwarding.</t>
 
 <figure anchor="FIG-semantic1"><artwork><![CDATA[
 address = prefix{.nodefunction{.nodefunction-parameters}}
@@ -563,20 +581,22 @@ is of course highly semantic and node implementation specific.</t>
 <t><xref target="FIG-internetworking"/> shows an example internetworking
 topology of 5 networks, each with its own independent
 address space. Globally unique Rxx numbers are used to refer
-to routers. An edge node is a router that has prefixes
+to routers.</t>
+
+<t>An edge node is a router that has prefixes
 from two or more networks into which it connects. In
 the example, R4 connects into Network1 with prefix 24
 and into Network2 with Prefix 14. Likewise, R8 connects
 into Network3 with prefix 23, into Network4 with prefix 12
 and into Network5 with prefix 11. An edge node can be
-a router simply with different interface into different
+a router simply with different interfaces into different
 networks, or it can be decomposed into multiple devices,
 each in a separate network. In this section we describe
 behavior as if it was a single device.</t>
 
 <t>For an edge node to pass a network into a separate network,
 the internetworking function on the node has to be called.
-In the example, this function is value 2 on all edge nodes, and
+In the example, this function is codepoint 2 on all edge nodes, and
 the first parameter is an identifier of local relevance for the
 network into which to pass the packet. In actual deployment,
 this function number can of course be locally significant to
@@ -586,8 +606,10 @@ control plane to assign the number to this function.</t>
 <t>Assume R12 (12) in Network4 wants to send a packet to
 R1 (21) in Network1. To send it R12-&gt;R8-&gt;R5-&gt;R1, R12
 would have to use a destination address of 12.2.3.15.2.1.21.0,
-or numerically without separators 0x12231521210.
-12 will route the packet in Network4 towards R8. .2 indicates
+or numerically without separators 0x12231521210.</t>
+
+<t>12 will route the packet in Network4 towards R8 because of the
+destination address 12/8 prefix. .2 indicates
 to R8 that it should invoke the interworking function and
 pass the packet into Network 3. As part of the interworking
 function, R8 then strips all the address prefix it has
@@ -600,7 +622,7 @@ address and forwarding the packet with destination address 21.0
 into Network1, where it will finally be received by R1 which passes
 the packet to its host stack because of dispose function 0.</t>
 
-<t>To allow for a return path, each edge node could equally
+<t>To (optionally) allow for a return path, each edge node could equally
 but inversely process the source address: When R12 sends the
 packet, it would indicate a source address of 12.0. When R8
 passes the packet via its interworking function into Network3,
@@ -616,13 +638,6 @@ and likewise, on its way towards R1, the address, for example
 when travelling via Network3 always has a returnable source
 address.</t>
 
-<t>In one simple flattened forwarding plane option, the
-interworking function is a simple prefix lookup such as
-1213/16 on R8, followed by stripping that prefix from the
-destination address and prepending another prefix,
-2314 to the source address before forwarding the packet
-into the destination network.</t>
-
 <t>With this behavior of the interworking function, it is obvious,
 that address management of networks would want to keep a
 sufficiently large number of very short prefixes, such as
@@ -631,6 +646,7 @@ the interworking function in a sufficiently larger number
 of edge routers so that a complete internetwork path address
 will not become too long to exceed the maximum address lengths.</t>
 
+</section>
 </section>
 <section anchor="control-plane" title="Control Plane">
 
@@ -822,7 +838,7 @@ charges could be applied.</t>
 </section>
 <section anchor="hardware-considerations" title="Hardware considerations">
 
-<section anchor="forwarding-plane-complexity" title="Forwarding plane complexity">
+<section anchor="forwarding-plane-simplicity" title="Forwarding plane simplicity">
 
 <t>Forwarding of FA-IINAS packets based on destination address
 is the same type of prefix lookup on the destination address
@@ -1716,432 +1732,439 @@ memo.</t>
   </back>
 
 <!-- ##markdown-source:
-H4sIALOO7GAAA+1963IbV5Lmf0bwHWrpiFkyBIAESMqSZj2xsizbmrXVGlL2
-eHa901EECkRZQBW6qkCKlrSxr7Gvt0+y+eXtnFMAJbm759+qWxYJVJ1rZp68
-fJlnOBzu703rWVldP8k23Xz4aH9vf68ru2XxJPt2U027sq7yZfZ0NmuKtqXH
-ssNvnx5l87rJyqormqro2uy27BbZi2pWrAv6T9VlL4vutm7e2GvZ5TqfFm12
-+OLFy6eXR/t7+dVVU9w8yeb5sKzydn9vVk+rfEV9zpp83g2L6Zui6ei7Lm+K
-fDj3gQxzH8iQxjD0MQxPTvb3bmkSL16+fnrx/CnNKu+K67q5e0IDndeYVtvl
-1ezP+bKuqKO7grpdl0+y/9HV00HW1k3XFPOWfrpbyQ/TerWiybT/E+/mm25R
-N0/297JsiP/wn7Jqn2SvR9lzHq5/LDN5XRfNEpPvfVs311jabtMUt0WZvS6m
-i6pe1tclLdBPl0/9uWKVl8snWdcV/3Xajub5ZjQrMBLMplnlXXlT8HAuvn02
-fjgZRz9P/OfH40f28+n4Yfj55NSfPz09eeg/Pz73n8/Gj0/958ljf/7s4cmX
-9vPDySPv6+H5+Yn9/Gjy5ePw82Nv89H5JDzz5flZ+PlxeP7xo/D848cn0c/y
-/IvhN6PfytyJo50WVd6UdTtcN/XVsli1EZEkb8yXxdthubavh23XbKbYB3/q
-DeiqbIgPWlr+qiunw6bedPi03TQ3xd2OJ6eLfLksquuipSHZ4/6c0PM8b5pi
-OWzruuJvvs/ru80T2WpltqezfI09NZ4hagCTvSzedtl3RVU0OTgge/Eqe9XU
-RLL1ksgv+76kL5rpopwSkyrXtdJuWzREUqCWJ0ZTL54/f/4km5xMTvjHbPKI
-+RYslCujP6uredEU1bTIqDfjY+sSLPzs5asjaTDiCfwJfKEcwLPMLuvq+t5H
-/vsir69q/PORh/6NFvT3RVFl/7LxZ7L+Q/9M/22z7zYl7Uczw7fPynZav3z6
-Ol3n51V+tYQce455r5uyLbIfN8uuXNQrfMyyjF/NXvzpckuSvW7yql3KXhxS
-47oURIrXRfckW3Td+snxMUma+Xy0abvpqJhtRtPq+H/9hvEdT9HwMa32cbEi
-kv3z7Xq06FbSxowEFnYHkuxzlvdVk98UtCpP37wpm/y3zb0P/rfihkjlm2J5
-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
-25cbYsT6C7J+CvwbixmHMZmtu793oHnpbHRdw0FRV1I/6UDzM/3OYq01K6k6
-ouYX1QLGvdXuL96ulxBMh2JoWEieL/zR2zjNIBtIFUbiNlTnXWiqCWQ7j96v
-Nr3JW9QkD1sagY6QqRiSkuOqa1Jd8OGE7OKB/zL58OEoVG4VKFgbYScgbwaq
-4njWh5FmP3E3v6pZCmn8jfVBkcdtFJeWY8eiqmSoSDZSvhwgxzVvhrQfq+gy
-H9W1erVcXeNObnc2KKbIj43CyDI6/3pXDgeFdauIRBnXfmbTjnj60OYcmach
-9wdOsyNB57Uho7hXYd1SfjXRI8JG4yTzIkVSkQLrPpJg3v8DS2DCkFXeAAA=
+H4sIADif7GAAA+19bXMbSZLed0bwP7S5ETYZAkAAJDWSznNhjUYzo/OMVkdq
+5vbs9V00gQbRK6Ab290gxR3J4b/hv+df4nzyraoaoKTZXX+zdjUigerqesnM
+ypcns4bD4eHBrJ6X1c2zbNsthk8ODw4PurJbFc+y77bVrCvrKl9lz+fzpmhb
+apYdf/f8JFvUTVZWXdFURddmd2W3zF5V82JT0H+qLntddHd1884ey642+axo
+s+NXr14/vzo5PMivr5vi9lm2yIdllbeHB/N6VuVreue8yRfdsJi9K5qOvuvy
+psiHCx/IMKceh/7m4Xh8eHBHQ3/1+u3zy5fPaS55V9zUzf0zGt6ixmTaLq/m
+/56v6oq6vy/oZZvyWfbfu3o2yNq66Zpi0dJP92v5YVav1zSF9n/g2XzbLevm
+2eFBlg3xH/5TVu2z7O0oe8mD9I9l/G/rollhyr1v6+YGC9ptm+KuKLO3xWxZ
+1av6pqRl+fnqubcr1nm5epZ1XfFfZu1okW9H8wIjwWyadd6VtwUP5/K7F5PH
+00n089R/fjp5Yj+fTR6Hn8dn3v7sbPzYf3564T+fT56e+c/Tp97+/PH4K/v5
+8fSJv+vxxcXYfn4y/epp+Pmp9/nkYhrafHVxHn5+Gto/fRLaP306jn6W9q+G
+347+VOZOEu2sqPKmrNvhpqmvV8W6ZdIQGk2eWKyK98NyY18P267ZzrAP3uod
+PTIsG6L+lpa/6srZsKm3HT5tt81tcb+n5WyZr1ZFdVO0NCRr7u2Eihd50xSr
+YVvXFX/zQ17fb5/JViuLPZ/nG+ypcQpRA1jrdfG+y74vqqLJQffZqzfZm6Ym
+kq1XRH7ZDyV90cyW5YxYU3mtlX7boiGSArU8M5p69fLly2fZdDwd84/Z9Alz
+K1goV/Z+UVeLoimqWZHR24x77ZVg3Bev35xIhxFP4E/gC+UAnmV2VVc3Dzb5
+b8u8vq7xzyca/Sst6F+WRZX989bbZP1G/0T/bbPvtyXtRzPHty/Kdla/fv42
+XeeXVX69gvR6iXlvmrItsp+2q65c1mt8zBKMH81e/f5qR369bfKqXcleHFPn
+uhREijdF9yxbdt3m2ekpSZrFYrRtu9momG9Hs+r0f/4J4zudoeNTWu3TYk0k
+++93m9GyW0sfcxJY2B1Isi9Z3jdNflvQqjx/965s8j9tH2z4X4tbIpVvi9VN
+Pi9Xq/rhhc7f1bfZZfFuSUsDWTMcDrP8mvgkn3X4/bKYQajziizzNmtyWr65
+yP+i7UCRxfvNqm6wkpUu3Sq/L5os8GTWLXNqSmS6rpsiA1eWxLf4uMoW5fti
+PgQ/0TZEz9DLtvIqYoHb8+z4bJpdl91JRiIdnzzOjifTJ/zRCCN9uywykg5t
+XQkfdfR7NMzZajsvsuuaXtJuNxsS/txqDULY0FjQ66buaLIlcfd9VtW3xYpO
+AaUCkw50SlxvuyxftXVWE/uuy78wabRZvYhHj75pli1EA51D9jS9e7bkqVXE
+wDSwjkQ+rcmc3tf5sG9W9TVx5is96ojy8c6uzq4LOhwanwDR8i2RkK17m51m
+KxpRR93NazpMqlZXpmyzdbGudauIa2hR8aLbsrjDwPGzEB+dkh110hHnWOt5
+sqzpDuYmug4PQFC0bujKxDIvas1jpfl2pUo4mxfG7Az45SqEzMkXowB7F7Kw
+ZdQz7VTnE6cRbWpI2DxbNDRQ7h5jyR/QdNb1vFiNbO3wi+w53lDNW2yG7UJb
+3JJIXmVEWinV39T0iJIefqdB3NDL1/l1SSt8T8RFy+ME6DQyMj5cl/P5ijWA
+32HNmnq+5ZHyJ7/Lfk+vxQbuY9PifU6yjbaOdzlfbQts85dz3+HBl/IeqU9F
+oeSerzGRX3/9TQf2x48DWYnw3IPH9sePD7B62f6/4fX9c/us0vDxYzylz2gO
+tAB/k0wZ9IXKQOQtLf3fWbxgSj0Bkx3/+qvqcx8/nvTEzbxoZ015TWxHCvjg
+rxI6g/8vdH6b0JHH/hbRE/aPVEzqhfep/4JglhHxFrOcxEXYFya9GREw8y3t
+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
+N2DhAAA=
 
 -->
 

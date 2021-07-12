@@ -3,7 +3,7 @@ coding: utf-8
 
 title: Functional Addressing (FA) for internets with Independent Network Address Spaces (IINAS)
 abbrev: fa-inas
-docname: draft-eckert-intarea-functional-addressing-for-internets-00
+docname: draft-eckert-intarea-functional-addr-internets-00
 wg: INTAREA
 category: info
 
@@ -73,17 +73,17 @@ informative:
 Recent work has raised interest in exploring network layer addressing that is
 more flexible than fixed-length addressing as used in IPv4 (32 bit) and IPv6 (128 bit).
 
-Reasons for the interest include both support for multiple and potentially novel
-address semantics of, but also optimizations of addressing for existing
+The reasons for the interest include both support for multiple and potentially novel
+address semantics, but also optimizations of addressing for existing
 semantics such as unicast tailored not for the global Internet 
-but to better support private networks and limited domains.
+but to better support private networks / limited domains.
 
 This memo explores in the view of the author yet little explored reasons for more flexible addresses
 namely the problems and opportunities for Internetworking with Independent Network Address Spaces (IINAS).
 
 To better enable such internetworks, this memo proposes a framework for a Functional Addressing model.
-This model also intends to support several other addressing model goals including programmability
-and multi-semantics.
+This model also intends to support several other addressing goals including programmability
+and multiple semantics.
 
 --- middle
 
@@ -93,21 +93,22 @@ and multi-semantics.
 
 Recent work has examined the value of more flexible than fixed-length addressing
 used in IPv4 (32 bit) and IPv6 (128 bit), see for example {{I-D.jia-intarea-scenarios-problems-addressing}},
-an {{I-D.jia-flex-ip-address-structure}}.
+and {{I-D.jia-flex-ip-address-structure}}.
 
-Reasons for this interest include both support for multiple and potentially novel
+The reasons for this interest include both support for multiple and potentially novel
 address semantics, see for example {{I-D.king-irtf-semantic-routing-survey}}
 and {{I-D.king-irtf-challenges-in-routing}}, but also optimizations of addressing for existing
 semantics, such as unicast, that are tailored not for the global Internet 
 but to better support private networks and limited domains ({{RFC8799}}).
 
-This memo describes one, in the view of the author yet little explored reason for more flexible addresses
+This memo describes one, in the view of the author yet little explored reason, for more flexible addresses
 namely the problems and opportunities for Internetworking with Independent Network Address Spaces (IINAS).
 
 To better enable such internetworks, this memo proposes a framework for a Functional Addressing model.
-This model also intends to support several other addressing model goals including programmability.
+This model also intends to support several other addressing model goals including programmability
+and multiple semantics.
 
-This memo calls the addressing model functional, because addresses can be seen as a structure of
+This memo calls the addressing model functional, because addresses are constructed as a structure of
 func1{parameter(s),func2{parameter(s),..i.funcN{parameter(s)}}}.
 
 ## Disclaimer
@@ -121,9 +122,9 @@ other designs.
 
 # Challenges
 
-This section discusses example challenges that gave rise to the proposal in
+This section discusses challenges that gave rise to the proposal in
 this document. It explores in more detail the core challenge not well
-explored elsewhere and summarize the others.
+explored elsewhere and already detailled elsewhere.
 
 ## High level observations
 
@@ -137,18 +138,18 @@ use-cases with especially IPv6:
   IPv4/IPv6 base header addresses, when they are not required.
   While the reasons for fixed size addressing in IPv4/IPv6 can be understood
   for the feasible high-speed, low-cost forwarders of the 1900th, when IPv6
-  was conceived, these reasons are today as obsolete as ATM cells where by
+  was conceived, these reasons are today (in the opinion of the author) as obsolete as ATM cells where by
   the end of the 1990th when both hardware forwarding and
   mathematical models allowed to provide all ATM type QoS with variable sized packets.
 
 + The Internet as the primary, if not only use-case driving the design:
   The address space semantics provided especially by IPv6 is very much focused
   on the one use-case that drove the development of IPv6: The Internet. While it
-  was and will continue to be an important and sufficient reason for IPv6, it
+  was and will continue to be th core and sufficient reason for maintaining IPv6, it
   is not sufficient in the opinion of the author for the much broader use of IPv6.
   As of today, a likely overwhelming number of hosts using TCP/IP(v6) protocol
   stacks are not "on the Internet" and the majority likely is not even 
-  "connected to the Internet", but instead part of limited domains. This
+  "connected to the Internet", but instead, they are part of limited domains. This
   even includes many routers in large service providers that are used to service
   Internet traffic. Routers in these networks are only in networks that may
   be called an "underlay" limited domain networks using MPLS, SR-MPLS or SRv6 and
@@ -162,13 +163,14 @@ use-cases with especially IPv6:
   them. This is the core behavior to support primarily the Internet use case. Yet,
   the IPv4 Internet today would not work without NAT, and arguably, the same may
   also happen to the IPv6 Internet, especially when networks attaching to inexpensive
-  Internet offerings want to avoid local renumbering in multihoming and/or
-  change of providers via NAT. Even more so, interconnecting IPv4 and IPv6
+  Internet offerings want to avoid complex src/dst forwarding for IPv6 multihoming,
+  and/or avoid renumbering upon change of provider addresses. Even more so, interconnecting IPv4 and IPv6
   networks has resulted in no fewer than 24 IPv4/IPv6 NAT solutions
   (see https://en.wikipedia.org/wiki/IPv6_transition_mechanism), giving rise to
   the question if and how on-path processing of addressing can be proactively
   become part of future addressing designs to support more flexible internetworking - 
-  translating the best of past NAT experience into better future designs.
+  translating the best of past NAT experience into better future designs. This is
+  a core option of what FA-IINAS can do.
 
 ## Internetworking limited domain networks with IP addressing
 
@@ -176,15 +178,17 @@ One of the core challenges of the existing IP(v4) and IPv6 addressing model are 
 addressing they provide for private networks with or without connectivity to the
 Internet, which are also called limited domain networks {{RFC8799}}.
 
-One reference example is that of networking inside a particular product/solution and
-then compositing this product with other products, probably even multiple times,
-hierarchical, as show in picture {{FIG-network}}. Similar issues and solutions
-can be found in networks with multiple layers of NAT such as Home networks
+One reference example is that of networking inside a particular product/solution/installation,
+and then compositing this product with other products, probably even multiple times,
+hierarchical, as show in picture {{FIG-network}}. These type of designs are traditional
+in industrial networks. Similar issues and solutions
+can be found in networks with multiple layers of NAT such as Home Networks
 that are dorm rooms connected via NAT to a dorm network, connected via
 another NAT to a campus network, connected via yet another NAT to maybe
-finally, te Internet. Similarly in equally complex federated private networks.
+finally, the Internet. Similarly designs can happen with more complex
+topologies in federated private networks.
 
-In pre-IP industrial networks, individual products where hiding their
+In pre-IP industrial networks, individual products were hiding their
 interior elements by some (combination) of elements that controlled
 the interior behavior completely and provided only an abstracted view
 of the machinery to the outside.
@@ -200,16 +204,17 @@ options such as control loops that can more easily be built
 across multiple components/levels of the hierarchy and controllers
 that can be pulled out of machinery and positioned elsewhere in the
 network, enabling virtualization and resource multiplexing. Multiple
-independently running control systems can be implemented in parallel
+independently running control systems can be implemented in parallel,
 including solutions like device vendor preventive maintenance telemetry,
-operator managed firmware update or third-part orchestrated security
+operator managed firmware update or third-party orchestrated security
 audits or intrusion detection/prevention, just to name a few.
 
 With IP connectivity, all this can be built without the need of understanding
 how to get through various layers of fixed-functionality higher-than-network
-layer gateways that an not be extended by third parties, but instead just
-requiring end-to-end IP connectivity - plus of course an appropriate set of
-security measures.
+layer gateways that can not be extended by third parties. Instead, new
+designs are based on end-to-end IP connectivity - plus appropriate set of
+security mesures at gateway routers, of course an appropriate set of
+security/filtering measures, for example MUD, {{RFC8520}}.
 
     +-------------------------------------------------------------------+
     |                               Controller / Gateway->Router        |
@@ -240,20 +245,21 @@ security measures.
 {: #FIG-network title="Example hierarchical composed internetwork"}
  
 
-In the opinion of the author of this memo, the most easily adopted
+In the opinion of the author, the most easily adopted
 addressing architecture in these type of solutions today is also the
-one most widely used: IPv4 with {{RFC1918}} addresses. These addresses
+one widely used: IPv4 with {{RFC1918}} addresses. These addresses
 are actually owned permanently for each deployment case - as long as
 the scope of addressing is well defined.
 
 In result, a common scheme of addressing in machinery such as the one
-shown in XXX is to reuse the same 10.0.0.0/8 or 192.168.0.0/16 addresses
+shown in {{FIG-network}} is to reuse the same 10.0.0.0/8 or 192.168.0.0/16 addresses
 for every instance of a product/machinery manufactured. In the example,
 actor1 could use 10.0.0.1, sensor1 10.0.0.2 and so on. But equally,
 if Machine 3 was the same or similar, its internal components would
-share the same machinery.
+share the same machinery. And when hundreds of these products are
+produced, hey would all have the same addresses.
 
-To allow composing those type of machineries,
+To allow deployment and composing those type of machineries,
 the router/switch connecting to the outside/next-level in a hierarchy
 will need simple NATing function for example statically mapping
 the 10.0.0.x on the inside to 10.0.1.x on the outside for Machine 1,
@@ -265,53 +271,55 @@ y for every instance.
 In support of solutions like this, many if not most industrial ethernet
 switches deployable as machinery gateways do therefore support this
 type of static NAT mappings. Likewise, common practices in industries
-rely on these addressing with composition via NAT approaches, including
-machineries as large as in transportation individual train cars to name
-one example.
+rely on this addressing with composition via NAT approaches, including
+machineries as large as production lines or in transportation networks train cars and
+all their included machineries/equipment.
 
 The desire to avoid NAT in IPv6 and availability of sufficient addressing
 space lead to replacing the concept of {{RFC1918}} in IPv4 with the concept
 of Unique Local Addresses (ULA) in IPv6, standardized in {{RFC4193}}.
 Instead of the few scoped prefixes of {{RFC1918}}, ULA provide for
-2^40 different prefixes, and the design guidelines are simple: pick a random
-prefix and then you can interconnect your networks later on with
+2^40 different prefixes, and the design guidelines are theoretically
+simple: pick a random prefix and then you can interconnect your networks later on with
 a very low probability of address prefix collision/reuse.
 
 Unfortunately, low probabilities of address collision is not a good
 design principle for most of these type of environments because there
 is really no good operational solution what do if such collision
 occurs, and rare errors are also very hard to build resilient solutions
-for. Also the probabilities begin to become much more likely when looking
-at a much larger set of addresses, such as when wanting to networks with
-thousands of instances of a product (like a train car).
+for. Also the probabilities begin to become much higher when not
+looking at a connection of just two or few of such ULA networks, but
+when there can be thousands of such networks, such as in the transportation
+networks use case.
 
 In result, ULA is not very persuasive for many such deployments, especially
 when the alternative with IPv4 is address prefix mapping as required for
-NAT, which is mostly a free provisioning side effect of setting up the
+NAT, when NAT an an almost free provisioning side effect of setting up the
 required connectivity via permit lists via network/transport
 filters. The need to automate such in-network filtering to secure
 such deployments can also be seen in the advent of MUD, {{RFC8520}}.
 
-If one considers that most of these networks will have less than
+If one considers that most of these subnet networks will have fewer than
 253 hosts connected to it, then the IPv6 ULA solution does also not
-provide for any more bits than the 16 bits of z.y in the above example
-using IPv4 10.z.y.x with x being the host part. For hosts, the
-lower 64 bits of an IPv6 address can easily only be used for the
-host part, the whole ULA prefix is 48 bits, leaving just 16 bit. Plus
-a significant packet header overhead plus fewer availability of
+provide for any more bits for subnets than the 16 bits of z.y in the above example
+using IPv4 10.z.y.x with x being the host part: The lower 64 bits of
+the IPv6 address is hard to use for anything than the host parts with
+non-router hosts.  The whole ULA prefix is 48 bits, leaving just 16 bit (128 - 64 -48).
+Add to that the non insignificant IPv6 packet header overhead plus fewer availability of
 NAT in IPv6 products because it is assumed to be less required, plus the
-insufficiency of "low likelihood of collisions" when attempting to
-avoid NAT.
+insufficiency of "low likelihood of collisions" when attempting to utilize
+only ULA.
 
 Vendors of equipment that have assigned Provider Independent IPv6 address space 
 could of course allocate addressing from that space for equipment they
 manufacture or integrate, whether it is globally unique or "generic", e.g.: reused
 across every instance of a product and hence requiring NAT. Unfortunately,
-and unlike ethernet, where one actually does own addresses after buying a
+and unlike ethernet, where one actually does own addresses after buying an
 OUI, assigned IPv6 addressing is not permanent, and even though
 revocation of address allocation is not standard practice, standardized
-solutions for global IPv6 address space (like IPv4 global address space) really needs
-to provide the ability for those addresses to be returnable.
+solutions for global IPv6 address space (like IPv4 global address space) really need
+to allow the ability for those addresses to be returnable instead of being
+handed off in products to customers.
 
 Even though in hindsight, the hierarchical address allocation from the
 available 16 bits in 10.x.y.z for two layers of interconnections
@@ -330,61 +338,65 @@ of the design are possible.
 As has been noted in prior memos, shorter addresses than IPv6 128 bit
 are highly desirable in private networks / limited domains whenever
 it is clear that the total required addressing space is much smaller and
-connectivity to e.g.: The Internet is not required.  Evidence of such requirements
-can be found for example in header compression for specific IoT networks such
-as {{RFC6282}}.
+connectivity to e.g.: the Internet is not required.  Evidence of such requirements
+can be found for example in header compression for IoT networks such
+as {{RFC6282}}. Such compression introduces yet another
+layer of complexity - the whole ecosystem of devices and diagnostic options
+has to support it to be equally acceptable as uncompressed packets.
 
 ## Additional semantics
 
 New semantics can only be introduced into existing IPv4/IPv6 when their
 required address size fits nicely into the 32 or 128 bit address space.
+
 This section does not aim to be complete, see {{I-D.king-irtf-semantic-routing-survey}}
 for a broader survey. Instead it will provide additional levels of details
-for the benefits of fittingly sized addresses for few example cases the
+for the benefits of fittingly sized addresses for few examples, that the
 author is familiar with.
 
-For IP Multicast this was the case in IPv4, and the additional bits of
-IPv6 addresses even allowed to encode additional IP multicast functionality
-through additional fields in IPv6 addresses, simplifying and improving
-IPv6 for IP multicast extremely over prior IPv4 best practices: 
-Scope address field {{RFC4291}}, SSM addresses {{RFC4607}}, Unicast
+When ignorin Anycast, IP Multicast is likely the most widely adopted additional
+semantic added to IPv4. With IPv6, IP Multicast became even more flexible
+and easy to deploy, because the additional bits of
+IPv6 addresses allowed to encode additional IP multicast parameters
+through additional fields in IPv6 addresses: Scope address field {{RFC4291}}, SSM addresses {{RFC4607}}, Unicast
 prefix multicast addresses {{RFC3306}} and embedded-RP {{RFC3956}}.
 Nevertheless, especially embedded-RP could have benefitted from even
 longer addresses because with the 128 bits available the solution had
-to take a hit in the complexity of deployment, specifically in so
-far that it required engineering of the unicast address of an RP to
-be very short.
+to take a hit in the complexity of deployment. It requires to
+engineer that RP address such that its non-0 host port is very short (4 bits).
 
 In contrast, Bit Indexed Explicit Replication (BIER) which started
-in the IETF in 2014 and resulted in the architecture {{RFC8279}}
-did not have the option to integrate into IP/IPv6 because it required
-addresses sizes of at least per-network configurable size from 64 to 496 bit
-plus additional qualifiers of maybe 16 bits (so-called SD, SI address
+in the IETF in 2014 and resulted in the architecture {{RFC8279}},
+did not choose the option to integrate into IP/IPv6 because it desired
+addresses sizes of at least per-network configurable from 64 to 4096 bit
+plus additional qualifiers of at least 16 bits (so-called SD, SI address
 qualifiers). This made it necessary for BIER to (re-!)invent its own
 network layer packet header, {{RFC8296}} which duplicates pretty much
-all packet header fields of MPLS and IP packets plus additional BIER
-header fields, so it could be used in both MPLS and non-MPLS networks.
+all packet header fields of MPLS plus IP packets plus additional BIER
+header fields, so that it can be used in both MPLS and non-MPLS networks.
 
 Similar arguments about the limited size of IPv6 address could likely
-be made for ICN/CCN network semantics because the semantic of their
+be made for ICN/CCN networks because the semantic of their
  addresses is that of data items such as time slices of specific
 spatial and temporal resolutions of some media such as an audio/video
-recording - and those name spaces would ideally have address as long
+recording - and those name spaces would ideally have addresses as long
 as URLs.
 
 ## Programmability
 
 Segment Routing via IPv6 (SRv6) introduced with {{RFC8986}} and {{RFC8754}}
-(SRH) and architecture in which source routing with IPv6 is combined with
-encoding of additional source-routing hop packet processing options
-encoded in the source-routing hop IPv6 address. This is a very
-flexible and theoretically extensible concept but very much limited
-by the fixed address length design of IPv6. In most cases the bits
-reserved for this additional packet processing (called "programmability")
+(SRH) and architecture in which source routing with an IPv6 extension
+header  is combined with encoding of additional processing semantics
+into the destination and source routing hops IPv6 addresses. SRv6
+calls this programmability. 
+
+SRv6 is a very flexible and theoretically extensible concept but challenged
+by the fixed address length design of IPv6. For most steering hop
+addresses,  the bits reserved for this additional packet processing 
 are not required, but when they are required there may even be too few
 bits available. Variable length addresses allowing for variable long
-programming bits would in the opinion of the author of this memo be
-highly beneficial.
+programming field in the address would in the opinion of the author be highly
+beneficial.
 
 One evidence for the programmability bits seen as wasteful in many
 cases is a variety of currently proposed drafts to provide more
@@ -398,7 +410,7 @@ refers to the design aspect that addresses in this design can be interpreted
 as functions with parameters.
 
 Notwithstanding other granularities or options, this document assumes that
-addresses are textually represented in hexadecimal and that he minimum structure
+addresses are textually represented in hexadecimal and that the minimum structure
 element of an address is 4 bit so that the different structural elements of
 an address can simply be shown as concatenation of hex digits. The "."
 character is inserted optionally to show where in an address one semantic
@@ -409,20 +421,23 @@ protocol, this memo starts by assuming all nodes are routers and that addresses
 are predominantly node addresses as opposed to IP/IPv6, which defines unicast
 addresses to be interface addresses. This is but an academic differentiation, 
 because node addresses can also be represented as interface addresses of
-so-called "loopback" interfaces. "." characters are used to emphasize
+so-called "loopback" interfaces.
 
 A network in this design is an independent address space, not shared with
-other networks of theoretically unlimited long addresses that is mapped onto a graph of
-transitively connected nodes. These nodes form the network. Practical limits to
+other networks. A nework has theoretically unlimited long addresses whose
+prefixes are mapped onto the nodes of the network, which are expected to
+form a graph of transitively connected nodes. Practical limits to
 address length are subject to acceptable packetization.
+
+## Addressing for unicast
 
 Each node is assigned one or more node prefixes from the networks address space and
 none of these node prefixes can be overlapping. In other words, no assigned nodeprefix
 can be a prefix of another assigned nodeprefix. This rule ensures that every node
 "owns" any address equal or longer to its assigned nodeprefix. Allocation of
 node prefixes is currently out of scope for this memo but could rely on any
-well-known methods including manual operator assigned or as initially described
-in this document assigned by manufacturer/vendor.
+well-known methods including manual operator assigned, SDN controll managed,
+or as initially described in this document assigned by manufacturer/vendor.
 
 Routing in a network is assumed to enable forwarding across the graph of the
 network to the node owning the nodeprefix of the address.
@@ -440,7 +455,9 @@ Addresses longer than the assigned "nodeprefix" are used to instantiate
 a specific function on the node itself. A generic representation of
 an address could be nodeprefix.function.{parameter}.
 
-## Dispose Function
+## Forwarding
+
+### Dispose Function
 
 When using a single digit function field, function = 0 could for example be 
 "dispose" to decapsulate the packets payload and deliver it to the host stack.
@@ -452,9 +469,9 @@ crucial issue as for the node prefixes themselves, putting the next-protocol int
 address makes it extensible too, so one would  not run out of a 256 space
 as IPv4/IPv6 might do at some point.
 
-## Steering Function
+### Steering Function
 
-More interestingly, command = 1 could be a "steer" command and the parameter
+Command = 1 could be a "steer" command and the parameter
 is another address. To act on the command, the node would strip the nodeprefix
 and command part of the address and forward it based on the address parameter.
 For example node 73 (e.g.: node with nodeprefix 73) receives a packet with destination
@@ -462,11 +479,11 @@ address 73.1.55.1.33.0. It forwards the same packet with the stripped destinatio
 address 55.1.33.0 to node 55, which likewise forwards the packet with stripped
 destination address 33.0 to node 33, which ultimately receives it.
 
-## Multiple semantics
+### Multiple semantics
 
 To introduce additional semantics into a network, such as for example multicasting,
 we need to generalize how to interpret the first part of the address, which so
-far was only interpreted to be a nodeprefix. 
+far was only interpreted to be a nodeprefix for unicast forwarding. 
 
     address = prefix{.nodefunction{.nodefunction-parameters}}
     prefix = semantic{.semantic-parameters}
@@ -534,7 +551,7 @@ course be useable in FA-IINAS. Whether or how flattening or
 other optimizations are feasible for other semantics such as multicast
 is of course highly semantic and node implementation specific.
 
-## Internetworking Function
+### Internetworking Function
 
     ................................
     .  Network1                    .
@@ -577,20 +594,22 @@ is of course highly semantic and node implementation specific.
 {{FIG-internetworking}} shows an example internetworking
 topology of 5 networks, each with its own independent
 address space. Globally unique Rxx numbers are used to refer
-to routers. An edge node is a router that has prefixes
+to routers.
+
+An edge node is a router that has prefixes
 from two or more networks into which it connects. In
 the example, R4 connects into Network1 with prefix 24
 and into Network2 with Prefix 14. Likewise, R8 connects
 into Network3 with prefix 23, into Network4 with prefix 12
 and into Network5 with prefix 11. An edge node can be
-a router simply with different interface into different
+a router simply with different interfaces into different
 networks, or it can be decomposed into multiple devices,
 each in a separate network. In this section we describe
 behavior as if it was a single device.
 
 For an edge node to pass a network into a separate network,
 the internetworking function on the node has to be called.
-In the example, this function is value 2 on all edge nodes, and
+In the example, this function is codepoint 2 on all edge nodes, and
 the first parameter is an identifier of local relevance for the
 network into which to pass the packet. In actual deployment,
 this function number can of course be locally significant to
@@ -601,7 +620,9 @@ Assume R12 (12) in Network4 wants to send a packet to
 R1 (21) in Network1. To send it R12->R8->R5->R1, R12
 would have to use a destination address of 12.2.3.15.2.1.21.0,
 or numerically without separators 0x12231521210.
-12 will route the packet in Network4 towards R8. .2 indicates
+
+12 will route the packet in Network4 towards R8 because of the
+destination address 12/8 prefix. .2 indicates
 to R8 that it should invoke the interworking function and
 pass the packet into Network 3. As part of the interworking
 function, R8 then strips all the address prefix it has
@@ -614,7 +635,7 @@ address and forwarding the packet with destination address 21.0
 into Network1, where it will finally be received by R1 which passes
 the packet to its host stack because of dispose function 0.
 
-To allow for a return path, each edge node could equally
+To (optionally) allow for a return path, each edge node could equally
 but inversely process the source address: When R12 sends the
 packet, it would indicate a source address of 12.0. When R8
 passes the packet via its interworking function into Network3,
@@ -629,13 +650,6 @@ is then the address to which R1 could send return packets,
 and likewise, on its way towards R1, the address, for example
 when travelling via Network3 always has a returnable source
 address.
-
-In one simple flattened forwarding plane option, the
-interworking function is a simple prefix lookup such as
-1213/16 on R8, followed by stripping that prefix from the
-destination address and prepending another prefix,
-2314 to the source address before forwarding the packet
-into the destination network.
 
 With this behavior of the interworking function, it is obvious,
 that address management of networks would want to keep a
@@ -826,7 +840,7 @@ charges could be applied.
 
 ## Hardware considerations
 
-### Forwarding plane complexity
+### Forwarding plane simplicity
 
 Forwarding of FA-IINAS packets based on destination address
 is the same type of prefix lookup on the destination address
